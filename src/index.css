@@ -1,0 +1,68 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  background: rgb(19, 20, 34);
+}
+
+.pointer:hover {
+  cursor: pointer;
+}
+
+.link {
+  text-decoration: underline;
+}
+
+.link:hover {
+  cursor: pointer;
+}
+
+.white-text {
+  color: white;
+}
+
+.white-link {
+  stroke: #bdbdbd !important;
+  stroke-width: 2px;
+}
+
+.header-container {
+  border-bottom: 3px solid white;
+  padding: 8px 0px 8px 0px;
+  position: relative;
+}
+
+.header-icon {
+  display: flex;
+  font-size: 30px;
+  position: absolute;
+}
+
+.header-question-icon {
+  left: 2px;
+  top: 8px;
+}
+
+.header-settings-icon {
+  right: 8px;
+  top: 8px;
+}
+
+.guess-section {
+  width: 400px !important;
+}
+
+.guessed-container {
+  height: 38px;
+  margin-bottom: 4px;
+  background-color: rgb(36, 38, 65);
+  border-radius: 20px;
+}
+
+.guessed-text {
+  padding: 6px 16px 6px 16px;
+}
