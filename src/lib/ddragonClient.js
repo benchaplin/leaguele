@@ -58,13 +58,14 @@ function getItemChildren(itemsMap, itemKey) {
   }
 }
 
-export function getAllItemNames(setter) {
+export function getAllItems(setter) {
   fetch("https://ddragon.leagueoflegends.com/cdn/12.5.1/data/en_US/item.json")
     .then(res => res.json())
     .then(res => {
-      const allItemNames = Object.keys(res.data).map(
-        itemKey => res.data[itemKey]["name"]
-      );
+      const allItemNames = Object.keys(res.data).map(itemKey => ({
+        name: res.data[itemKey]["name"],
+        image: res.data[itemKey]["image"]["full"]
+      }));
       setter(allItemNames);
     })
     .catch(err => {

@@ -1,8 +1,9 @@
 import Tree from "react-d3-tree";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
-function BuildTree({ itemBuildTree, guesses, showSolution }) {
+function BuildTree({ itemBuildTree, guesses, success, showSolution }) {
   const { width } = useWindowDimensions();
+  const mobile = width < 600;
 
   const renderItemImage = ({ nodeDatum }) => {
     return (
@@ -15,7 +16,8 @@ function BuildTree({ itemBuildTree, guesses, showSolution }) {
           y="-1"
           stroke="#bdbdbd"
         />
-        {showSolution || guesses.includes(nodeDatum.name) ? (
+        {showSolution ||
+        guesses.map(guess => guess.label).includes(nodeDatum.name) ? (
           <>
             <rect
               fill="none"
@@ -31,17 +33,36 @@ function BuildTree({ itemBuildTree, guesses, showSolution }) {
               height="50"
               x="-25"
             />
+            {(showSolution || success) &&
+              nodeDatum.name === itemBuildTree.name && (
+                <text
+                  x="34"
+                  y="30"
+                  fontSize={!mobile ? "20px" : "16px"}
+                  fontWeight="lighter"
+                  stroke="#ffffff"
+                  fill="#ffffff"
+                  strokeWidth="1"
+                >
+                  {nodeDatum.name}
+                </text>
+              )}
           </>
         ) : (
-          <text x="-5" y="31" fontSize="20px" stroke="#ffffff">
+          <text
+            x="-5"
+            y="33"
+            fontSize="24px"
+            fontWeight="lighter"
+            stroke="#ffffff"
+            fill="#ffffff"
+          >
             ?
           </text>
         )}
       </g>
     );
   };
-
-  const mobile = width < 600;
 
   const nodeSize = !mobile ? { x: 100, y: 120 } : { x: 80, y: 120 };
   const treeWidth = !mobile ? 600 : width;

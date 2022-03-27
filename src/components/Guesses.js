@@ -1,12 +1,41 @@
-function Guesses({ guesses }) {
+function Guesses({ itemBuildTree, guesses }) {
+  let itemsInBuildTree = [];
+  if (itemBuildTree) {
+    itemsInBuildTree = [itemBuildTree.name];
+    itemBuildTree.children.map(child => {
+      itemsInBuildTree = [...itemsInBuildTree, child.name];
+      return child.children.map(
+        gchild => (itemsInBuildTree = [...itemsInBuildTree, gchild.name])
+      );
+    });
+  }
+
   return (
     <div className="d-flex justify-content-center">
       <div className="my-3 white-text guess-section">
         {guesses.map((guess, i) => (
-          <div className="guessed-container" key={i}>
-            <p className="guessed-text">
-              {i + 1}. {guesses[i]}
-            </p>
+          <div className="row mx-2 px-2 justify-content-center" key={i}>
+            <div className="col px-1">
+              <div
+                className={`guessed-box ${
+                  itemsInBuildTree.includes(guess.label)
+                    ? "right-guess"
+                    : "wrong-guess"
+                } ${itemBuildTree.name === guess.label && "top-right-guess"}`}
+              >
+                <p className="guessed-text">
+                  {i + 1}. {guesses[i].label}
+                </p>
+              </div>
+            </div>
+            <div className="col-3 px-1" style={{ minWidth: 38 }}>
+              <img
+                className="guessed-image"
+                src={`https://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/${guess.value}`}
+                height="38px"
+                alt=""
+              />
+            </div>
           </div>
         ))}
       </div>

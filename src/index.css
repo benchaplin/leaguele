@@ -57,12 +57,31 @@ body {
 }
 
 .guessed-container {
+  width: 100%;
+}
+
+.guessed-box {
   height: 38px;
   margin-bottom: 4px;
-  background-color: rgb(36, 38, 65);
   border-radius: 20px;
+}
+
+.wrong-guess {
+  background-color: #963f46;
+}
+
+.right-guess {
+  background-color: #198754;
+}
+
+.top-right-guess {
+  background-color: #c1994e;
 }
 
 .guessed-text {
   padding: 6px 16px 6px 16px;
+}
+
+.guessed-image {
+  border: 1px solid #bdbdbd;
 }

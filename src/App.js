@@ -3,11 +3,11 @@ import Header from "./components/Header";
 import BuildTree from "./components/BuildTree";
 import GuessInput from "./components/GuessInput";
 import Guesses from "./components/Guesses";
-import { getRandomItemBuildTree, getAllItemNames } from "./lib/ddragonClient";
+import { getRandomItemBuildTree, getAllItems } from "./lib/ddragonClient";
 
 function App() {
   const [itemBuildTree, setItemBuildTree] = useState(null);
-  const [allItemNames, setAllItemNames] = useState([]);
+  const [allItems, setAllItems] = useState([]);
   const [guesses, setGuesses] = useState([]);
   const [showSolution, setShowSolution] = useState(false);
 
@@ -15,10 +15,12 @@ function App() {
 
   useEffect(() => {
     getRandomItemBuildTree(setItemBuildTree);
-    getAllItemNames(setAllItemNames);
+    getAllItems(setAllItems);
   }, []);
 
-  const success = itemBuildTree && guesses.includes(itemBuildTree.name);
+  const success =
+    itemBuildTree &&
+    guesses.map(item => item.label).includes(itemBuildTree.name);
 
   return (
     <div className="container p-0" style={{ maxWidth: 600 }}>
@@ -29,16 +31,17 @@ function App() {
         <BuildTree
           itemBuildTree={itemBuildTree}
           guesses={guesses}
+          success={success}
           showSolution={showSolution}
         />
         <GuessInput
-          allItemNames={allItemNames}
+          allItems={allItems}
           guesses={guesses}
           makeGuess={appendGuess}
           success={success}
           showSolution={() => setShowSolution(true)}
         />
-        <Guesses guesses={guesses} />
+        <Guesses itemBuildTree={itemBuildTree} guesses={guesses} />
       </div>
     </div>
   );
