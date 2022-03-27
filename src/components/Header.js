@@ -38,11 +38,11 @@ function Header() {
           <ul>
             <li>Guess the top level item in eight tries.</li>
             <li>
-              Guess <b>any</b> item and it will appear anywhere it exists in the
-              build tree.
+              Guess an item and it will appear anywhere it exists in the build
+              tree.
             </li>
           </ul>
-          For example, if you guessing "Long Sword" might result in:
+          For example, guessing "Long Sword" might result in:
           <br />
           <div className="d-flex justify-content-center">
             <img width="400" src={example} alt="" />

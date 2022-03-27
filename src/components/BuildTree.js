@@ -41,8 +41,10 @@ function BuildTree({ itemBuildTree, guesses, showSolution }) {
     );
   };
 
-  const nodeSize = width >= 600 ? { x: 100, y: 120 } : { x: 80, y: 120 };
-  const treeWidth = width >= 600 ? 600 : width;
+  const mobile = width < 600;
+
+  const nodeSize = !mobile ? { x: 100, y: 120 } : { x: 80, y: 120 };
+  const treeWidth = !mobile ? 600 : width;
 
   return (
     <div
@@ -55,7 +57,7 @@ function BuildTree({ itemBuildTree, guesses, showSolution }) {
           zoomable={false}
           collapsible={false}
           separation={{ siblings: 1, nonSiblings: 1 }}
-          translate={{ x: treeWidth / 2, y: 20 }}
+          translate={{ x: treeWidth / 2, y: !mobile ? 20 : 30 }}
           nodeSize={nodeSize}
           pathClassFunc={() => "white-link"}
           renderCustomNodeElement={rd3tProps => renderItemImage(rd3tProps)}
