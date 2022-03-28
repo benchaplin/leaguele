@@ -46,7 +46,7 @@ function GuessInput({ allItems, guesses, makeGuess, success, showSolution }) {
             <div className="col-3 px-1">
               <button
                 type="submit"
-                className="btn btn-success"
+                className="btn btn-light"
                 disabled={success || guesses.length >= 8}
               >
                 Guess
