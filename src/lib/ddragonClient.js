@@ -1,3 +1,5 @@
+import seedrandom from "seedrandom";
+
 export function getRandomItemBuildTree(setter) {
   fetch("https://ddragon.leagueoflegends.com/cdn/12.5.1/data/en_US/item.json")
     .then(res => res.json())
@@ -30,10 +32,11 @@ function getRandomMaxItem(itemsMap) {
 
 function getDateSeededRandomInt(maxIntExclusive) {
   const today = new Date();
-  const seededNumber =
-    today.getDate() * 31 + today.getMonth() * 7 + today.getFullYear();
-  const boundedSeededNumber = +("0." + seededNumber);
-  return Math.floor(boundedSeededNumber * maxIntExclusive);
+  const rng = seedrandom(
+    `${today.getDate()}${today.getMonth}${today.getFullYear()}`
+  );
+  console.log(Math.floor(rng() * maxIntExclusive));
+  return Math.floor(rng() * maxIntExclusive);
 }
 
 function getItemBuildTree(itemsMap, itemKey) {
