@@ -1,4 +1,4 @@
-import seedrandom from "seedrandom";
+const gen = require("random-seed");
 
 export function getRandomItemBuildTree(setter) {
   fetch("https://ddragon.leagueoflegends.com/cdn/12.5.1/data/en_US/item.json")
@@ -21,22 +21,23 @@ export function getRandomItemBuildTree(setter) {
 
 function getRandomMaxItem(itemsMap) {
   const itemsKeys = Object.keys(itemsMap);
-  let randomItemIndex;
-  let itemDepth = -1;
-  while (itemDepth < 3 && randomItemIndex !== 4403) {
-    randomItemIndex = itemsKeys[getDateSeededRandomInt(itemsKeys.length)];
-    itemDepth = itemsMap[randomItemIndex]["depth"] || -1;
-  }
-  return randomItemIndex;
+  const fullItemKeys = itemsKeys.filter(
+    itemKey => itemsMap[itemKey]["depth"] === 3
+  );
+  const randomItemKey =
+    fullItemKeys[getDateSeededRandomInt(fullItemKeys.length)];
+  return randomItemKey;
 }
 
 function getDateSeededRandomInt(maxIntExclusive) {
   const today = new Date();
-  const rng = seedrandom(
+  const random = gen.create(
     `${today.getDate()}${today.getMonth}${today.getFullYear()}`
   );
-  console.log(Math.floor(rng() * maxIntExclusive));
-  return Math.floor(rng() * maxIntExclusive);
+  if ([53].includes(random(maxIntExclusive))) {
+    return random(maxIntExclusive) + 1;
+  }
+  return random(maxIntExclusive);
 }
 
 function getItemBuildTree(itemsMap, itemKey) {
