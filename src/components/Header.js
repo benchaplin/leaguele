@@ -59,6 +59,7 @@ function Header() {
           <Modal.Title>Settings</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          <i>Configurable options coming soon...</i>
           <ul>
             <li>
               <a href="https://github.com/benchaplin/leaguele">GitHub</a>
