@@ -17,6 +17,7 @@ function BuildTree({ itemBuildTree, guesses, success, showSolution }) {
           stroke="#bdbdbd"
         />
         {showSolution ||
+        success ||
         guesses.map(guess => guess.label).includes(nodeDatum.name) ? (
           <>
             <rect
