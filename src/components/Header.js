@@ -1,9 +1,13 @@
 import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import Switch from "react-switch";
 import logo from "../images/leaguele.png";
-import example from "../images/example.png";
+import ex1 from "../images/ex1.png";
+import ex2 from "../images/ex2.png";
+import ex3 from "../images/ex3.png";
+import github from "../images/github.png";
 
-function Header() {
+function Header({ unlimitedGuesses, setUnlimitedGuesses }) {
   const [showHelp, setShowHelp] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -36,16 +40,27 @@ function Header() {
         </Modal.Header>
         <Modal.Body>
           <ul>
-            <li>Guess the top level item in eight tries.</li>
+            <li>Guess the mystery item in six tries.</li>
             <li>
-              Guess an item and it will appear anywhere it exists in the build
-              tree.
+              Guessing an item will reveal any items it shares with the mystery
+              item.
             </li>
           </ul>
-          For example, guessing "Long Sword" might result in:
+          For example, suppose the mystery item is <b>Black Cleaver</b>.
+          Guessing <b>Manamune</b> might result in:
           <br />
           <div className="d-flex justify-content-center">
-            <img width="400" src={example} alt="" />
+            <img width="100%" style={{ maxWidth: 280 }} src={ex1} alt="" />
+          </div>
+          Because <b>Long Sword</b> and <b>Caulfield's Warhammer</b> are both
+          shared by <b>Manamune</b> and <b>Black Cleaver</b>:
+          <div className="row">
+            <div className="col">
+              <img width="100%" src={ex2} alt="" />
+            </div>
+            <div className="col">
+              <img width="100%" src={ex3} alt="" />
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer>
@@ -59,16 +74,27 @@ function Header() {
           <Modal.Title>Settings</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <i>Configurable options coming soon...</i>
-          <ul>
-            <li>
-              <a href="https://github.com/benchaplin/leaguele">GitHub</a>
-            </li>
-            <li>
-              <a href="mailto:benchaplin@protonmail.ch">Contact</a>
-            </li>
-          </ul>
+          <div>
+            <div className="d-inline-flex">
+              <Switch
+                onChange={() => setUnlimitedGuesses(!unlimitedGuesses)}
+                checked={unlimitedGuesses}
+              />
+              <p className="mt-05">
+                &nbsp; <b>Easy mode</b> (unlimited guesses)
+              </p>
+            </div>
+          </div>
         </Modal.Body>
+        <div className="d-inline-flex p-3">
+          <a href="https://github.com/benchaplin/leaguele">
+            <img src={github} alt="" width="30px" />
+          </a>
+          &nbsp;
+          <a className="mt-1" href="https://github.com/benchaplin/leaguele">
+            GitHub
+          </a>
+        </div>
       </Modal>
     </>
   );

@@ -1,20 +1,27 @@
 import { useState } from "react";
 import Select from "react-select";
 
-function GuessInput({ allItems, guesses, makeGuess, success, showSolution }) {
+function GuessInput({
+  allItems,
+  guesses,
+  makeGuess,
+  unlimitedGuesses,
+  success,
+  showSolution
+}) {
   const [option, setOption] = useState("");
 
   const options = allItems.map(item => ({
-    value: item.image,
+    value: item,
     label: item.name
   }));
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (options.some(o => o.value === option.value)) {
+    if (options.some(o => o.label === option.label)) {
       setOption("");
-      if (!guesses.map(guess => guess.label).includes(option.label)) {
-        makeGuess(option);
+      if (!guesses.map(guess => guess.item.name).includes(option.value.name)) {
+        makeGuess(option.value);
       }
     }
   };
@@ -22,9 +29,9 @@ function GuessInput({ allItems, guesses, makeGuess, success, showSolution }) {
   return (
     <div className="d-flex justify-content-center">
       <div className="guess-section">
-        {!success && guesses.length >= 8 && (
+        {!unlimitedGuesses && !success && guesses.length >= 6 && (
           <div className="alert alert-danger">
-            You've used your eight guesses!
+            You've used your six guesses!
             <br />
             <span className="link" onClick={showSolution}>
               Click to see solution
@@ -40,14 +47,16 @@ function GuessInput({ allItems, guesses, makeGuess, success, showSolution }) {
                 onChange={setOption}
                 options={options}
                 onFocus={() => {}}
-                isDisabled={success || guesses.length >= 8}
+                isDisabled={
+                  success || (!unlimitedGuesses && guesses.length >= 6)
+                }
               />
             </div>
             <div className="col-3 px-1">
               <button
                 type="submit"
                 className="btn btn-light"
-                disabled={success || guesses.length >= 8}
+                disabled={success || (!unlimitedGuesses && guesses.length >= 6)}
               >
                 Guess
               </button>

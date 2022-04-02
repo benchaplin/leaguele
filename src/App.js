@@ -3,33 +3,52 @@ import Header from "./components/Header";
 import BuildTree from "./components/BuildTree";
 import GuessInput from "./components/GuessInput";
 import Guesses from "./components/Guesses";
-import { getRandomItemBuildTree, getAllItems } from "./lib/ddragonClient";
+import { getAllItems } from "./lib/ddragonClient";
 
 function App() {
-  const [itemBuildTree, setItemBuildTree] = useState(null);
   const [allItems, setAllItems] = useState([]);
+  const [randomItem, setRandomItem] = useState(null);
   const [guesses, setGuesses] = useState([]);
   const [showSolution, setShowSolution] = useState(false);
+  const [unlimitedGuesses, setUnlimitedGuesses] = useState(false);
 
-  const appendGuess = guess => setGuesses([...guesses, guess]);
+  const makeGuess = guess => {
+    let itemsInBuildTree = [guess.name];
+    guess.children.map(child => {
+      itemsInBuildTree = [...itemsInBuildTree, child.name];
+      return child.children.map(
+        gchild => (itemsInBuildTree = [...itemsInBuildTree, gchild.name])
+      );
+    });
+
+    setGuesses([
+      ...guesses,
+      {
+        item: guess,
+        flatBuildTree: itemsInBuildTree
+      }
+    ]);
+  };
 
   useEffect(() => {
-    getRandomItemBuildTree(setItemBuildTree);
-    getAllItems(setAllItems);
+    getAllItems(setAllItems, setRandomItem);
   }, []);
 
   const success =
-    itemBuildTree &&
-    guesses.map(item => item.label).includes(itemBuildTree.name);
+    randomItem &&
+    guesses.map(guess => guess.item.name).includes(randomItem.name);
 
   return (
     <div className="container p-0" style={{ maxWidth: 600 }}>
       <div style={{ height: "10vh" }}>
-        <Header />
+        <Header
+          unlimitedGuesses={unlimitedGuesses}
+          setUnlimitedGuesses={setUnlimitedGuesses}
+        />
       </div>
       <div style={{ height: "90vh" }}>
         <BuildTree
-          itemBuildTree={itemBuildTree}
+          randomItem={randomItem}
           guesses={guesses}
           success={success}
           showSolution={showSolution}
@@ -37,11 +56,12 @@ function App() {
         <GuessInput
           allItems={allItems}
           guesses={guesses}
-          makeGuess={appendGuess}
+          makeGuess={makeGuess}
+          unlimitedGuesses={unlimitedGuesses}
           success={success}
           showSolution={() => setShowSolution(true)}
         />
-        <Guesses itemBuildTree={itemBuildTree} guesses={guesses} />
+        <Guesses randomItem={randomItem} guesses={guesses} />
       </div>
     </div>
   );

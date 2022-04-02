@@ -1,43 +1,33 @@
-const gen = require("random-seed");
-
-export function getRandomItemBuildTree(setter) {
+export function getAllItems(setAllItems, setRandomItem) {
   fetch("https://ddragon.leagueoflegends.com/cdn/12.5.1/data/en_US/item.json")
     .then(res => res.json())
     .then(res => {
-      const randomMaxItemIndex = getRandomMaxItem(res.data);
+      const allItemNames = Object.keys(res.data).map(itemKey =>
+        compileItemInfo(res.data, itemKey)
+      );
+      setAllItems(allItemNames);
 
+      const randomMaxItemIndex = getRandomMaxItem(res.data);
       const randomMaxItemBuildTree = getItemBuildTree(
         res.data,
         randomMaxItemIndex
       );
-
-      setter(randomMaxItemBuildTree);
+      setRandomItem(randomMaxItemBuildTree);
     })
     .catch(err => {
       console.error(err);
-      setter(false);
+      setAllItems(false);
     });
 }
 
-function getRandomMaxItem(itemsMap) {
-  const itemsKeys = Object.keys(itemsMap);
-  const fullItemKeys = itemsKeys.filter(
-    itemKey => itemsMap[itemKey]["depth"] === 3
-  );
-  const randomItemKey =
-    fullItemKeys[getDateSeededRandomInt(fullItemKeys.length)];
-  return randomItemKey;
-}
+function compileItemInfo(itemsMap, itemKey) {
+  const itemBuildTree = {
+    name: itemsMap[itemKey]["name"],
+    image: itemsMap[itemKey]["image"]["full"],
+    children: getItemChildren(itemsMap, itemKey)
+  };
 
-function getDateSeededRandomInt(maxIntExclusive) {
-  const today = new Date();
-  const random = gen.create(
-    `${today.getDate()}${today.getMonth}${today.getFullYear()}`
-  );
-  if ([53].includes(random(maxIntExclusive))) {
-    return random(maxIntExclusive) + 1;
-  }
-  return random(maxIntExclusive);
+  return itemBuildTree;
 }
 
 function getItemBuildTree(itemsMap, itemKey) {
@@ -62,18 +52,20 @@ function getItemChildren(itemsMap, itemKey) {
   }
 }
 
-export function getAllItems(setter) {
-  fetch("https://ddragon.leagueoflegends.com/cdn/12.5.1/data/en_US/item.json")
-    .then(res => res.json())
-    .then(res => {
-      const allItemNames = Object.keys(res.data).map(itemKey => ({
-        name: res.data[itemKey]["name"],
-        image: res.data[itemKey]["image"]["full"]
-      }));
-      setter(allItemNames);
-    })
-    .catch(err => {
-      console.error(err);
-      setter(false);
-    });
+function getRandomMaxItem(itemsMap) {
+  const itemsKeys = Object.keys(itemsMap);
+  const fullItemKeys = itemsKeys.filter(
+    itemKey => itemsMap[itemKey]["depth"] === 3
+  );
+  const randomItemKey =
+    fullItemKeys[getDateSeededRandomInt(fullItemKeys.length)];
+  return randomItemKey;
+}
+
+function getDateSeededRandomInt(maxIntExclusive) {
+  const today = new Date();
+  const n =
+    (today.getDate() * 3 + today.getMonth() * 7 + today.getFullYear()) %
+    maxIntExclusive;
+  return n;
 }
