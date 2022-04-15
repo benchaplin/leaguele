@@ -9,6 +9,14 @@ body {
   background: rgb(19, 20, 34);
 }
 
+.w-48 {
+  width: 48%;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
 .mt-05 {
   margin-top: 1px;
 }
@@ -58,6 +66,19 @@ body {
 
 .guess-section {
   width: 400px !important;
+}
+
+.show-solution {
+  background-color: #dedede;
+}
+
+.play-again {
+  color: white;
+  background-color: #198754;
+}
+
+.play-again:hover {
+  color: white;
 }
 
 .guessed-container {

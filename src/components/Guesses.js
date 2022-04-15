@@ -1,3 +1,5 @@
+import React from "react";
+
 function Guesses({ randomItem, guesses }) {
   let itemsInBuildTree = [];
   if (randomItem) {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Switch from "react-switch";
 import logo from "../images/leaguele.png";
@@ -7,7 +7,12 @@ import ex2 from "../images/ex2.png";
 import ex3 from "../images/ex3.png";
 import github from "../images/github.png";
 
-function Header({ unlimitedGuesses, setUnlimitedGuesses }) {
+function Header({
+  unlimitedGuesses,
+  setUnlimitedGuesses,
+  unlimitedGames,
+  setUnlimitedGames
+}) {
   const [showHelp, setShowHelp] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -82,6 +87,17 @@ function Header({ unlimitedGuesses, setUnlimitedGuesses }) {
               />
               <p className="mt-05">
                 &nbsp; <b>Easy mode</b> (unlimited guesses)
+              </p>
+            </div>
+          </div>
+          <div>
+            <div className="d-inline-flex">
+              <Switch
+                onChange={() => setUnlimitedGames(!unlimitedGames)}
+                checked={unlimitedGames}
+              />
+              <p className="mt-05">
+                &nbsp; <b>Unlimited mode</b> (unlimited games per day)
               </p>
             </div>
           </div>

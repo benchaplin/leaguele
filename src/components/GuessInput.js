@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Select from "react-select";
 
 function GuessInput({
@@ -6,8 +6,10 @@ function GuessInput({
   guesses,
   makeGuess,
   unlimitedGuesses,
-  success,
-  showSolution
+  unlimitedGames,
+  gameWon,
+  showSolution,
+  newGame
 }) {
   const [option, setOption] = useState("");
 
@@ -26,17 +28,38 @@ function GuessInput({
     }
   };
 
+  const gameLost = !unlimitedGuesses && guesses.length >= 6 && !gameWon;
+
   return (
     <div className="d-flex justify-content-center">
       <div className="guess-section">
-        {!unlimitedGuesses && !success && guesses.length >= 6 && (
+        {gameLost && (
           <div className="alert alert-danger">
             You've used your six guesses!
-            <br />
-            <span className="link" onClick={showSolution}>
-              Click to see solution
-            </span>{" "}
-            or refresh to retry.
+          </div>
+        )}
+        {(gameLost || (gameWon && unlimitedGames)) && (
+          <div className="mb-3 d-flex">
+            {gameLost && (
+              <button
+                className={`btn show-solution w-48 ${
+                  unlimitedGames ? "" : "mx-auto"
+                }`}
+                onClick={showSolution}
+              >
+                Show solution
+              </button>
+            )}
+            {unlimitedGames && (
+              <button
+                className={`btn play-again w-48 ${
+                  gameLost ? "ml-auto" : "mx-auto"
+                }`}
+                onClick={newGame}
+              >
+                Play again
+              </button>
+            )}
           </div>
         )}
         <form onSubmit={handleSubmit}>
@@ -47,16 +70,14 @@ function GuessInput({
                 onChange={setOption}
                 options={options}
                 onFocus={() => {}}
-                isDisabled={
-                  success || (!unlimitedGuesses && guesses.length >= 6)
-                }
+                isDisabled={gameWon || gameLost}
               />
             </div>
             <div className="col-3 px-1">
               <button
                 type="submit"
                 className="btn btn-light"
-                disabled={success || (!unlimitedGuesses && guesses.length >= 6)}
+                disabled={gameWon || gameLost}
               >
                 Guess
               </button>

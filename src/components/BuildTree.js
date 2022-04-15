@@ -1,7 +1,8 @@
+import React from "react";
 import Tree from "react-d3-tree";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
-function BuildTree({ randomItem, guesses, success, showSolution }) {
+function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
   const { width } = useWindowDimensions();
   const mobile = width < 600;
 
@@ -17,7 +18,7 @@ function BuildTree({ randomItem, guesses, success, showSolution }) {
           stroke="#bdbdbd"
         />
         {showSolution ||
-        success ||
+        gameWon ||
         []
           .concat(...guesses.map(g => g.flatBuildTree))
           .includes(nodeDatum.name) ? (
@@ -36,7 +37,7 @@ function BuildTree({ randomItem, guesses, success, showSolution }) {
               height="50"
               x="-25"
             />
-            {(showSolution || success) && nodeDatum.name === randomItem.name && (
+            {(showSolution || gameWon) && nodeDatum.name === randomItem.name && (
               <text
                 x="34"
                 y="30"

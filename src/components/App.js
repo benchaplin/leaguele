@@ -1,9 +1,10 @@
+import React from "react";
 import { useState, useEffect } from "react";
 import Header from "./Header";
 import BuildTree from "./BuildTree";
 import GuessInput from "./GuessInput";
 import Guesses from "./Guesses";
-import { getAllItems } from "../services/api/ddragonClient";
+import { getAllItems, getRandomItem } from "../services/itemService";
 
 function App() {
   const [allItems, setAllItems] = useState([]);
@@ -11,6 +12,7 @@ function App() {
   const [guesses, setGuesses] = useState([]);
   const [showSolution, setShowSolution] = useState(false);
   const [unlimitedGuesses, setUnlimitedGuesses] = useState(false);
+  const [unlimitedGames, setUnlimitedGames] = useState(false);
 
   const makeGuess = guess => {
     let itemsInBuildTree = [guess.name];
@@ -30,11 +32,22 @@ function App() {
     ]);
   };
 
+  const initGame = allItems => {
+    setGuesses([]);
+    setShowSolution(false);
+    const randomItem = getRandomItem(allItems, unlimitedGames);
+    console.log(randomItem);
+    setRandomItem(randomItem);
+  };
+
   useEffect(() => {
-    getAllItems(setAllItems, setRandomItem);
+    getAllItems().then(items => {
+      setAllItems(items);
+      initGame(items);
+    });
   }, []);
 
-  const success =
+  const gameWon =
     randomItem &&
     guesses.map(guess => guess.item.name).includes(randomItem.name);
 
@@ -44,13 +57,15 @@ function App() {
         <Header
           unlimitedGuesses={unlimitedGuesses}
           setUnlimitedGuesses={setUnlimitedGuesses}
+          unlimitedGames={unlimitedGames}
+          setUnlimitedGames={setUnlimitedGames}
         />
       </div>
       <div style={{ height: "90vh" }}>
         <BuildTree
           randomItem={randomItem}
           guesses={guesses}
-          success={success}
+          gameWon={gameWon}
           showSolution={showSolution}
         />
         <GuessInput
@@ -58,8 +73,10 @@ function App() {
           guesses={guesses}
           makeGuess={makeGuess}
           unlimitedGuesses={unlimitedGuesses}
-          success={success}
+          unlimitedGames={unlimitedGames}
+          gameWon={gameWon}
           showSolution={() => setShowSolution(true)}
+          newGame={() => initGame(allItems)}
         />
         <Guesses randomItem={randomItem} guesses={guesses} />
       </div>
