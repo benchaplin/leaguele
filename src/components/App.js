@@ -39,7 +39,7 @@ function App() {
     ]);
   };
 
-  const initGame = allItems => {
+  const initGame = (allItems, unlimitedGames) => {
     setGuesses([]);
     setShowSolution(false);
     const randomItem = getRandomItem(allItems, unlimitedGames);
@@ -49,7 +49,7 @@ function App() {
   useEffect(() => {
     getAllItems().then(items => {
       setAllItems(items);
-      initGame(items);
+      initGame(items, false);
     });
   }, []);
 
@@ -82,7 +82,7 @@ function App() {
           unlimitedGames={unlimitedGames}
           gameWon={gameWon}
           showSolution={() => setShowSolution(true)}
-          newGame={() => initGame(allItems)}
+          newGame={() => initGame(allItems, unlimitedGames)}
         />
         <Guesses randomItem={randomItem} guesses={guesses} />
       </div>
