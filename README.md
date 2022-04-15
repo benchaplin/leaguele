@@ -1,6 +1,6 @@
 # Leaguele - https://leaguele.site
-png
-Wordle-inspired game for League of Legends item builds.
+
+A Wordle-inspired game for League of Legends item builds.
 
 <img src="https://github.com/benchaplin/leaguele/raw/main/images/ex.jpg" alt="Screenshot" width="300"/>
 
