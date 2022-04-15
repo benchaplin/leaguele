@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Header from "./components/Header";
-import BuildTree from "./components/BuildTree";
-import GuessInput from "./components/GuessInput";
-import Guesses from "./components/Guesses";
-import { getAllItems } from "./lib/ddragonClient";
+import Header from "./Header";
+import BuildTree from "./BuildTree";
+import GuessInput from "./GuessInput";
+import Guesses from "./Guesses";
+import { getAllItems } from "../services/api/ddragonClient";
 
 function App() {
   const [allItems, setAllItems] = useState([]);
