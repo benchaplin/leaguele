@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import Header from "./Header";
 import BuildTree from "./BuildTree";
 import GuessInput from "./GuessInput";
@@ -11,8 +12,14 @@ function App() {
   const [randomItem, setRandomItem] = useState(null);
   const [guesses, setGuesses] = useState([]);
   const [showSolution, setShowSolution] = useState(false);
-  const [unlimitedGuesses, setUnlimitedGuesses] = useState(false);
-  const [unlimitedGames, setUnlimitedGames] = useState(false);
+  const [unlimitedGuesses, setUnlimitedGuesses] = useLocalStorage(
+    "unlimitedGuesses",
+    false
+  );
+  const [unlimitedGames, setUnlimitedGames] = useLocalStorage(
+    "unlimitedGames",
+    false
+  );
 
   const makeGuess = guess => {
     let itemsInBuildTree = [guess.name];
@@ -36,7 +43,6 @@ function App() {
     setGuesses([]);
     setShowSolution(false);
     const randomItem = getRandomItem(allItems, unlimitedGames);
-    console.log(randomItem);
     setRandomItem(randomItem);
   };
 
