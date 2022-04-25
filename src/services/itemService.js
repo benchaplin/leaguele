@@ -8,7 +8,7 @@ export function getAllItems() {
   });
 }
 
-export function getRandomItem(allItems, unlimitedGames) {
+export function getRandomItem(allItems, dateSeeded) {
   const fullItems = allItems.filter(
     item =>
       item.children.length > 0 &&
@@ -16,11 +16,14 @@ export function getRandomItem(allItems, unlimitedGames) {
         .length > 0 &&
       item.name !== "The Golden Spatula"
   );
-  return fullItems[
-    unlimitedGames
-      ? getRandomInt(fullItems.length)
-      : getDateSeededRandomInt(fullItems.length)
-  ];
+  const tin =
+    fullItems[
+      dateSeeded
+        ? getDateSeededRandomInt(fullItems.length)
+        : getRandomInt(fullItems.length)
+    ];
+  console.log(tin);
+  return tin;
 }
 
 function compileItemInfo(itemsMap, itemKey) {

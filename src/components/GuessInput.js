@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Select from "react-select";
 
 function GuessInput({
   allItems,
   guesses,
   makeGuess,
-  unlimitedGuesses,
   unlimitedGames,
   gameWon,
+  gameLost,
   showSolution,
   newGame
 }) {
@@ -28,8 +28,6 @@ function GuessInput({
     }
   };
 
-  const gameLost = !unlimitedGuesses && guesses.length >= 6 && !gameWon;
-
   return (
     <div className="d-flex justify-content-center">
       <div className="guess-section">
@@ -38,30 +36,26 @@ function GuessInput({
             You've used your six guesses!
           </div>
         )}
-        {(gameLost || (gameWon && unlimitedGames)) && (
-          <div className="mb-3 d-flex">
-            {gameLost && (
-              <button
-                className={`btn show-solution w-48 ${
-                  unlimitedGames ? "" : "mx-auto"
-                }`}
-                onClick={showSolution}
-              >
-                Show solution
-              </button>
-            )}
-            {unlimitedGames && (
-              <button
-                className={`btn play-again w-48 ${
-                  gameLost ? "ml-auto" : "mx-auto"
-                }`}
-                onClick={newGame}
-              >
-                Play again
-              </button>
-            )}
-          </div>
-        )}
+        <div className="d-flex">
+          {gameLost && (
+            <button
+              className={`btn btn-blue w-48 ${unlimitedGames ? "" : "mx-auto"}`}
+              onClick={showSolution}
+            >
+              Show solution
+            </button>
+          )}
+          {unlimitedGames && (gameWon || gameLost) && (
+            <button
+              className={`btn btn-blue w-48 ${
+                gameLost ? "ml-auto" : "mx-auto"
+              }`}
+              onClick={newGame}
+            >
+              Play again
+            </button>
+          )}
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="row mx-2 px-2 justify-content-center">
             <div className="col px-1">

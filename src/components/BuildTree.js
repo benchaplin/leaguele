@@ -1,4 +1,3 @@
-import React from "react";
 import Tree from "react-d3-tree";
 import useWindowDimensions from "../hooks/useWindowDimensions";
 
@@ -81,7 +80,7 @@ function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
           zoomable={false}
           collapsible={false}
           separation={{ siblings: 1, nonSiblings: 1 }}
-          translate={{ x: treeWidth / 2, y: !mobile ? 20 : 30 }}
+          translate={{ x: treeWidth / 2, y: 20 }}
           nodeSize={nodeSize}
           pathClassFunc={() => "white-link"}
           renderCustomNodeElement={rd3tProps => renderItemImage(rd3tProps)}

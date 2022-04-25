@@ -1,7 +1,8 @@
+// Forked from: https://usehooks.com/useLocalStorage/
+// Implements the same functionality except state is not fetched if from a previous date (local time)
 import { useState } from "react";
 
-// Source: https://usehooks.com/useLocalStorage/
-export default function useLocalStorage(key, initialValue) {
+export default function useDailyLocalStorage(key, initialValue) {
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState(() => {

@@ -59,6 +59,11 @@ body {
   top: 8px;
 }
 
+.header-stats-icon {
+  right: 50px;
+  top: 8px;
+}
+
 .header-settings-icon {
   right: 8px;
   top: 8px;
@@ -68,16 +73,12 @@ body {
   width: 400px !important;
 }
 
-.show-solution {
-  background-color: #dedede;
-}
-
-.play-again {
+.btn-blue {
   color: white;
-  background-color: #198754;
+  background-color: #373961;
 }
 
-.play-again:hover {
+.btn-blue:hover {
   color: white;
 }
 
