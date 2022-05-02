@@ -16,14 +16,13 @@ export function getRandomItem(allItems, dateSeeded) {
         .length > 0 &&
       item.name !== "The Golden Spatula"
   );
-  const tin =
+  const randomItem =
     fullItems[
       dateSeeded
         ? getDateSeededRandomInt(fullItems.length)
         : getRandomInt(fullItems.length)
     ];
-  console.log(tin);
-  return tin;
+  return randomItem;
 }
 
 function compileItemInfo(itemsMap, itemKey) {

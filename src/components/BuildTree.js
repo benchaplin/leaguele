@@ -72,7 +72,7 @@ function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
   return (
     <div
       className="d-flex justify-content-center"
-      style={{ width: treeWidth, height: 360, pointerEvents: "none" }}
+      style={{ width: treeWidth, height: 330, pointerEvents: "none" }}
     >
       {randomItem && (
         <Tree
@@ -80,7 +80,7 @@ function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
           zoomable={false}
           collapsible={false}
           separation={{ siblings: 1, nonSiblings: 1 }}
-          translate={{ x: treeWidth / 2, y: 20 }}
+          translate={{ x: treeWidth / 2, y: 10 }}
           nodeSize={nodeSize}
           pathClassFunc={() => "white-link"}
           renderCustomNodeElement={rd3tProps => renderItemImage(rd3tProps)}

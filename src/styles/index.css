@@ -50,23 +50,23 @@ body {
 
 .header-icon {
   display: flex;
-  font-size: 30px;
+  font-size: 26px;
   position: absolute;
 }
 
 .header-question-icon {
-  left: 2px;
-  top: 8px;
+  left: 0px;
+  top: 11px;
 }
 
 .header-stats-icon {
   right: 50px;
-  top: 8px;
+  top: 11px;
 }
 
 .header-settings-icon {
-  right: 8px;
-  top: 8px;
+  right: 6px;
+  top: 11px;
 }
 
 .guess-section {

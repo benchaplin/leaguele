@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import useLocalStorage from "../hooks/useLocalStorage";
 import useDailyLocalStorage from "../hooks/useDailyLocalStorage";
 import Header from "./Header";
 import BuildTree from "./BuildTree";
@@ -30,12 +31,17 @@ function App() {
   );
   const [bonusGameLost, setBonusGameLost] = useState(false);
   const [showSolution, setShowSolution] = useState(false);
-  const [stats, setStats] = useDailyLocalStorage("stats", null);
-  const [unlimitedGuesses, setUnlimitedGuesses] = useDailyLocalStorage(
+  const [stats, setStats] = useLocalStorage("stats", {
+    played: 0,
+    guessDist: [0, 0, 0, 0, 0, 0],
+    streak: 0,
+    maxStreak: 0
+  });
+  const [unlimitedGuesses, setUnlimitedGuesses] = useLocalStorage(
     "unlimitedGuesses",
     false
   );
-  const [unlimitedGames, setUnlimitedGames] = useDailyLocalStorage(
+  const [unlimitedGames, setUnlimitedGames] = useLocalStorage(
     "unlimitedGames",
     false
   );
@@ -43,7 +49,7 @@ function App() {
   useEffect(() => {
     getAllItems().then(items => {
       setAllItems(items);
-      if (dailyGuesses.length === 0) initDailyGame(items, false);
+      if (!dailyRandomItem) initDailyGame(items, false);
     });
   }, []);
 
@@ -72,7 +78,8 @@ function App() {
     guesses,
     setGuesses,
     setGameWon,
-    setGameLost
+    setGameLost,
+    shouldSetStats
   ) => {
     let itemsInBuildTree = [guess.name];
     guess.children.map(child => {
@@ -92,8 +99,29 @@ function App() {
     setGuesses(newGuesses);
     if (newGuesses.map(guess => guess.item.name).includes(randomItem.name)) {
       setGameWon(true);
+      if (!unlimitedGuesses && shouldSetStats) {
+        setStats(prevStats => ({
+          played: prevStats.played + 1,
+          guessDist: prevStats.guessDist.map((e, i) =>
+            newGuesses.length === i + 1 ? e + 1 : e
+          ),
+          streak: prevStats.streak + 1,
+          maxStreak:
+            prevStats.streak + 1 > prevStats.maxStreak
+              ? prevStats.streak + 1
+              : prevStats.maxStreak
+        }));
+      }
     } else if (!unlimitedGuesses && newGuesses.length === 6) {
       setGameLost(true);
+      if (shouldSetStats) {
+        setStats(prevStats => ({
+          played: prevStats.played + 1,
+          guessDist: prevStats.guessDist,
+          streak: 0,
+          maxStreak: prevStats.maxStreak
+        }));
+      }
     }
   };
 
@@ -105,7 +133,8 @@ function App() {
           bonusGuesses,
           setBonusGuesses,
           setBonusGameWon,
-          setBonusGameLost
+          setBonusGameLost,
+          false
         )
     : guess =>
         makeGuess(
@@ -114,7 +143,8 @@ function App() {
           dailyGuesses,
           setDailyGuesses,
           setDailyGameWon,
-          setDailyGameLost
+          setDailyGameLost,
+          true
         );
 
   const randomItem = playingBonus ? bonusRandomItem : dailyRandomItem;
@@ -131,6 +161,7 @@ function App() {
           setUnlimitedGuesses={setUnlimitedGuesses}
           unlimitedGames={unlimitedGames}
           setUnlimitedGames={setUnlimitedGames}
+          stats={stats}
         />
       </div>
       <div>

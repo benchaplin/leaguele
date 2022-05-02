@@ -8,7 +8,8 @@ function Header({
   unlimitedGuesses,
   setUnlimitedGuesses,
   unlimitedGames,
-  setUnlimitedGames
+  setUnlimitedGames,
+  stats
 }) {
   const [showHelp, setShowHelp] = useState(false);
   const [showStats, setShowStats] = useState(false);
@@ -26,7 +27,7 @@ function Header({
   return (
     <>
       <div className="text-center header-container">
-        <img height="50" src={logo} alt="" />
+        <img height="45" src={logo} alt="" />
         <p
           className="header-icon header-question-icon pointer"
           onClick={handleShowHelp}
@@ -47,7 +48,11 @@ function Header({
         </p>
       </div>
       <HelpModal showHelp={showHelp} handleCloseHelp={handleCloseHelp} />
-      <StatsModal showStats={showStats} handleCloseStats={handleCloseStats} />
+      <StatsModal
+        stats={stats}
+        showStats={showStats}
+        handleCloseStats={handleCloseStats}
+      />
       <SettingsModal
         showSettings={showSettings}
         handleCloseSettings={handleCloseSettings}

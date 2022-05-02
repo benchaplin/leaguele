@@ -1,5 +1,5 @@
 // Forked from: https://usehooks.com/useLocalStorage/
-// Implements the same functionality except state is not fetched if from a previous date (local time)
+// Implements the same functionality except state is not fetched if from a previous date (local timezone)
 import { useState } from "react";
 
 export default function useDailyLocalStorage(key, initialValue) {
@@ -11,10 +11,21 @@ export default function useDailyLocalStorage(key, initialValue) {
     }
 
     try {
-      // Get from local storage by key
-      const item = window.localStorage.getItem(key);
-      // Parse stored json or if none return initialValue
-      return item ? JSON.parse(item) : initialValue;
+      // Check if local storage date key is same as today's
+      const todayStr = getTodayStr();
+      if (
+        window.localStorage.getItem(key) &&
+        Object.keys(JSON.parse(window.localStorage.getItem(key)))[0] ===
+          todayStr
+      ) {
+        // If so, use the value behind it
+        const item = JSON.parse(window.localStorage.getItem(key))[todayStr];
+        // Parse stored json or if none return initialValue
+        return item ? item : initialValue;
+      } else {
+        // If not, use the initialValue
+        return initialValue;
+      }
     } catch (error) {
       // If error also return initialValue
       console.log(error);
@@ -33,7 +44,11 @@ export default function useDailyLocalStorage(key, initialValue) {
       setStoredValue(valueToStore);
       // Save to local storage
       if (typeof window !== "undefined") {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        const todayStr = getTodayStr();
+        window.localStorage.setItem(
+          key,
+          JSON.stringify({ [todayStr]: valueToStore })
+        );
       }
     } catch (error) {
       // A more advanced implementation would handle the error case
@@ -42,4 +57,9 @@ export default function useDailyLocalStorage(key, initialValue) {
   };
 
   return [storedValue, setValue];
+}
+
+function getTodayStr() {
+  const today = new Date();
+  return `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
 }

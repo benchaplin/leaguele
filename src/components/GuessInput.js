@@ -56,7 +56,7 @@ function GuessInput({
             </button>
           )}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form className="mt-3" onSubmit={handleSubmit}>
           <div className="row mx-2 px-2 justify-content-center">
             <div className="col px-1">
               <Select
