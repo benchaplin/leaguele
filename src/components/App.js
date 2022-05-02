@@ -164,7 +164,7 @@ function App() {
           stats={stats}
         />
       </div>
-      <div>
+      <div style={{ minHeight: "calc(100vh - 80px)" }}>
         <BuildTree
           randomItem={randomItem}
           guesses={guesses}
