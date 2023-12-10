@@ -1,10 +1,29 @@
-import { getAllItemsRaw } from "./api/ddragonClient";
+import { getAllItemsRaw, getLatestVersionRaw } from "./api/ddragonClient";
 
-export function getAllItems() {
-  return getAllItemsRaw().then(res => {
-    return Object.keys(res.data).map(itemKey =>
-      compileItemInfo(res.data, itemKey)
-    );
+export function getLatestVersion() {
+  return getLatestVersionRaw().then(res => res[0]);
+}
+
+export async function getAllItems() {
+  const version = await getLatestVersion();
+  return getAllItemsRaw(version).then(res => {
+    return Object.keys(res.data).reduce((acc, itemKey) => {
+      const item = res.data[itemKey];
+      /* Filter out:
+      - Non-Summoner's Rift (map 11)
+      - Required ally items
+      - Ornn upgrades (sometimes missing requiredAlly)
+      */
+
+      if (
+        item.maps["11"] &&
+        item.requiredAlly === undefined &&
+        !item.description.includes("ornnBonus")
+      ) {
+        acc.push(compileItemInfo(res.data, itemKey));
+      }
+      return acc;
+    }, []);
   });
 }
 
@@ -13,8 +32,7 @@ export function getRandomItem(allItems, dateSeeded) {
     item =>
       item.children.length > 0 &&
       item.children.filter(itemChildren => itemChildren.children.length > 0)
-        .length > 0 &&
-      item.name !== "The Golden Spatula"
+        .length > 0
   );
   const randomItem =
     fullItems[
