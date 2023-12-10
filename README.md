@@ -1,4 +1,4 @@
-# Leaguele - https://leaguele.site
+# [Leaguele](https://leaguele.site)
 
 A Wordle-inspired game for League of Legends item builds.
 
