@@ -1,7 +1,10 @@
 import Tree from "react-d3-tree";
 import useWindowDimensions from "../hooks/useWindowDimensions";
+import { VersionContext } from "../VersionProvider";
+import { useContext } from "react";
 
 function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
+  const version = useContext(VersionContext);
   const { width } = useWindowDimensions();
   const mobile = width < 600;
 
@@ -31,24 +34,25 @@ function BuildTree({ randomItem, guesses, gameWon, showSolution }) {
               stroke="#bdbdbd"
             />
             <image
-              href={`https://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/${nodeDatum.image}`}
+              href={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${nodeDatum.image}`}
               width="50"
               height="50"
               x="-25"
             />
-            {(showSolution || gameWon) && nodeDatum.name === randomItem.name && (
-              <text
-                x="34"
-                y="30"
-                fontSize={!mobile ? "20px" : "16px"}
-                fontWeight="lighter"
-                stroke="#ffffff"
-                fill="#ffffff"
-                strokeWidth="1"
-              >
-                {nodeDatum.name}
-              </text>
-            )}
+            {(showSolution || gameWon) &&
+              nodeDatum.name === randomItem.name && (
+                <text
+                  x="34"
+                  y="30"
+                  fontSize={!mobile ? "20px" : "16px"}
+                  fontWeight="lighter"
+                  stroke="#ffffff"
+                  fill="#ffffff"
+                  strokeWidth="1"
+                >
+                  {nodeDatum.name}
+                </text>
+              )}
           </>
         ) : (
           <text

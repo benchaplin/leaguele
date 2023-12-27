@@ -1,4 +1,9 @@
+import { useContext } from "react";
+import { VersionContext } from "../VersionProvider";
+
 function Guesses({ randomItem, guesses }) {
+  const version = useContext(VersionContext);
+
   let itemsInBuildTree = [];
   if (randomItem) {
     itemsInBuildTree = [randomItem.name];
@@ -33,7 +38,7 @@ function Guesses({ randomItem, guesses }) {
             <div className="col-3 px-1" style={{ minWidth: 38 }}>
               <img
                 className="guessed-image"
-                src={`https://ddragon.leagueoflegends.com/cdn/12.5.1/img/item/${guess.item.image}`}
+                src={`https://ddragon.leagueoflegends.com/cdn/${version}/img/item/${guess.item.image}`}
                 height="38px"
                 alt=""
               />
