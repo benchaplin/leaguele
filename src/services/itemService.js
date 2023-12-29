@@ -11,6 +11,7 @@ export async function getAllItems() {
       const item = res.data[itemKey];
       /* Filter out:
       - Non-Summoner's Rift (map 11)
+      - Required champion items
       - Required ally items
       - Ornn upgrades (sometimes missing requiredAlly)
       */
@@ -18,6 +19,7 @@ export async function getAllItems() {
       if (
         item.maps["11"] &&
         item.requiredAlly === undefined &&
+        item.requiredChampion === undefined &&
         !item.description.includes("ornnBonus")
       ) {
         acc.push(compileItemInfo(res.data, itemKey));
